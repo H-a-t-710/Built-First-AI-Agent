@@ -9,13 +9,24 @@ import logging
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
-# Ensure the API key is set in the environment variables
-api_key = os.environ.get("GEMINI_API_KEY")
+# Function to load environment variables
+def load_env_variable(key):
+    try:
+        with open(".env", "r") as file:
+            for line in file:
+                if line.startswith(key + "="):
+                    return line.strip().split("=", 1)[1]
+    except FileNotFoundError:
+        print(".env file not found.")
+    return None
+
+# Get API key using the custom function
+api_key = load_env_variable("GEMINI_API_KEY")
 if not api_key:
-    raise ValueError("GEMINI_API_KEY is not set. Please set it as an environment variable.")
+    raise ValueError("GEMINI_API_KEY is not set in .env file")
 
 # Configure the Generative AI client with the API key
-genai.configure(api_key="AIzaSyDZvSPlKaB7w327fiXJHvNzZGhLYpNIoGA")
+genai.configure(api_key=api_key)
 
 # Define the configuration for text generation
 generation_config = {
