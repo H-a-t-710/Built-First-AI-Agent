@@ -1,4 +1,5 @@
 google-generativeai
+groq
 PyPDF2
 pytesseract
 pdf2image
